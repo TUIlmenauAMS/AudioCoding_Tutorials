@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Live Spectrum: File or Microphone</title>
+<style>
+  :root { --bg:#0e0f13; --fg:#e8eaf0; --accent:#78e3ff; }
+  body { margin:0; background:radial-gradient(1200px 800px at 70% -10%, #1a1f2a 0%, #0e0f13 55%); color:var(--fg);
+         font:15px/1.4 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,"Noto Sans",Arial; }
+  header { padding:16px 20px 8px; display:grid; gap:10px; }
+  .row { display:grid; grid-template-columns: 1fr auto; gap:14px; align-items:center; }
+  .controls { display:grid; gap:10px; }
+  .controls .group { display:grid; grid-template-columns: 140px 1fr 100px; gap:10px; align-items:center; }
+  .group label { color:#b9c0cf; }
+  input[type="range"]{ width:100%; }
+  select, button, input[type="file"]{
+    background:#121420; color:var(--fg); border:1px solid #2b3345; border-radius:8px; padding:8px 10px;
+  }
+  button.primary{ background:linear-gradient(180deg,#3f51b5 0%,#283593 100%); border:none; font-weight:600; letter-spacing:.2px; }
+  #vizWrap{ position:relative; height:52vh; min-height:320px; margin:8px 16px 18px; border-radius:14px;
+            background:linear-gradient(180deg,#0b0c12 0%,#090a10 100%); box-shadow:0 10px 30px rgba(0,0,0,.45), inset 0 0 0 1px #151a23; overflow:hidden; }
+  #viz{ width:100%; height:100%; display:block; }
+  .hud{ position:absolute; left:14px; top:10px; color:#aeb6c7; font-size:12px; letter-spacing:.3px; text-shadow:0 1px 0 rgba(0,0,0,.6); user-select:none; }
+  footer{ padding:10px 20px 18px; color:#99a2b6; font-size:12px; }
+  a{ color:var(--accent); text-decoration:none; }
+  .hint{ color:#8f98ac; }
+  .micro-only{ display:none; } .file-only{ display:block; }
+</style>
+</head>
+<body>
+  <header>
+    <div class="row">
+      <div class="controls">
+        <div class="group">
+          <label>Source</label>
+          <select id="source">
+            <option value="file" selected>Audio file</option>
+            <option value="mic">Microphone</option>
+          </select>
+          <span id="srInfo">–</span>
+        </div>
+
+        <!-- File path -->
+        <div class="group file-only">
+          <label>Audio file</label>
+          <input id="file" type="file" accept="audio/*" />
+          <button id="play" class="primary" disabled>Play</button>
+        </div>
+
+        <!-- Mic path -->
+        <div class="group micro-only">
+          <label>Microphone</label>
+          <button id="micBtn" class="primary">Enable Mic</button>
+          <label style="display:flex; gap:8px; align-items:center; justify-self:start;">
+            <input id="monitor" type="checkbox" /> Monitor
+          </label>
+        </div>
+
+        <div class="group">
+          <label>Subbands</label>
+          <input id="bands" type="range" min="4" max="128" step="1" value="48" />
+          <span id="bandsVal">48</span>
+        </div>
+        <div class="group">
+          <label>FFT size</label>
+          <select id="fftSize">
+            <option>512</option><option>1024</option><option selected>2048</option>
+            <option>4096</option><option>8192</option><option>16384</option>
+          </select>
+          <span id="fps">– fps</span>
+        </div>
+        <div class="group">
+          <label>Smoothing</label>
+          <input id="smooth" type="range" min="0" max="0.95" step="0.01" value="0.5" />
+          <span id="smoothVal">0.50</span>
+        </div>
+        <div class="group">
+          <label>Scale</label>
+          <select id="scale">
+            <option value="lin" selected>Linear frequency</option>
+            <option value="log">Log frequency</option>
+          </select>
+          <span id="nyq">Nyquist: – Hz</span>
+        </div>
+      </div>
+
+      <!-- File player (hidden in Mic mode) -->
+      <audio id="audio" preload="metadata" style="width:320px; max-width:45vw" controls></audio>
+    </div>
+  </header>
+
+  <div id="vizWrap">
+    <canvas id="viz"></canvas>
+    <div class="hud" id="hud">Choose “Microphone” and press “Enable Mic”, or load an audio file.</div>
+  </div>
+
+  <footer>
+    <span class="hint">Tip:</span> In Microphone mode, “Monitor” routes the mic to your speakers—use headphones to avoid feedback.
+  </footer>
+
+<script>
+(() => {
+  // --- DOM
+  const els = {
+    sourceSel: document.getElementById('source'),
+    file:      document.getElementById('file'),
+    playBtn:   document.getElementById('play'),
+    audio:     document.getElementById('audio'),
+    micBtn:    document.getElementById('micBtn'),
+    monitor:   document.getElementById('monitor'),
+
+    bands:     document.getElementById('bands'),
+    bandsVal:  document.getElementById('bandsVal'),
+    fftSize:   document.getElementById('fftSize'),
+    smooth:    document.getElementById('smooth'),
+    smoothVal: document.getElementById('smoothVal'),
+    scale:     document.getElementById('scale'),
+
+    nyq:       document.getElementById('nyq'),
+    srInfo:    document.getElementById('srInfo'),
+    fps:       document.getElementById('fps'),
+
+    canvas:    document.getElementById('viz'),
+    hud:       document.getElementById('hud'),
+    wrap:      document.getElementById('vizWrap'),
+  };
+  const fileOnly = document.querySelectorAll('.file-only');
+  const microOnly = document.querySelectorAll('.micro-only');
+
+  // --- Audio graph nodes
+  let ctx = null;
+  let analyser = null;
+  let elemSource = null;                // MediaElementAudioSourceNode
+  let micStream = null;                 // MediaStream
+  let micSource = null;                 // MediaStreamAudioSourceNode
+  let objectURL = null;
+
+  // --- Render state
+  let rafId = 0;
+  let dataDB = null;
+  let lastDraw = performance.now();
+  let frameCounter = 0, fpsAvg = 0;
+
+  // --- Canvas
+  const g = els.canvas.getContext('2d', { alpha: true });
+  const ro = new ResizeObserver(() => { resizeCanvas(); drawBackground(); });
+  ro.observe(els.wrap);
+
+  function resizeCanvas() {
+    const dpr = Math.max(1, window.devicePixelRatio || 1);
+    const { clientWidth:w, clientHeight:h } = els.canvas;
+    els.canvas.width = Math.round(w * dpr);
+    els.canvas.height = Math.round(h * dpr);
+    g.setTransform(dpr, 0, 0, dpr, 0, 0);
+    g.imageSmoothingEnabled = true;
+  }
+
+  // --- Utils
+  const clamp = (x, lo, hi) => Math.min(hi, Math.max(lo, x));
+  const dbToLinPow = db => Math.pow(10, db / 10);
+  const linPowToDb = p => 10 * Math.log10(Math.max(1e-12, p));
+  const roundRect = (ctx, x, y, w, h, r) => {
+    const r2 = Math.min(r, w/2, h/2);
+    ctx.beginPath();
+    ctx.moveTo(x + r2, y);
+    ctx.arcTo(x + w, y, x + w, y + h, r2);
+    ctx.arcTo(x + w, y + h, x, y + h, r2);
+    ctx.arcTo(x, y + h, x, y, r2);
+    ctx.arcTo(x, y, x + w, y, r2);
+    ctx.closePath();
+  };
+  const hueForBand = (i, n) => 300 * Math.pow(i / Math.max(1, n - 1), 0.85);
+
+  // --- Init AudioContext + Analyser once
+  async function ensureCtx() {
+    if (ctx) return;
+    ctx = new (window.AudioContext || window.webkitAudioContext)();
+    analyser = ctx.createAnalyser();
+    analyser.fftSize = parseInt(els.fftSize.value, 10);
+    analyser.smoothingTimeConstant = parseFloat(els.smooth.value);
+    analyser.minDecibels = -100;
+    analyser.maxDecibels = -20;
+    els.nyq.textContent = `Nyquist: ${Math.round(ctx.sampleRate / 2)} Hz`;
+    els.srInfo.textContent = `${Math.round(ctx.sampleRate)} Hz`;
+    cancelAnimationFrame(rafId);
+    render();
+  }
+
+  // --- Source switching
+  function showMode(mode) {
+    const show = (nodes, on) => nodes.forEach(n => n.style.display = on ? 'grid' : 'none');
+    show(fileOnly, mode === 'file');
+    show(microOnly, mode === 'mic');
+    els.audio.style.display = (mode === 'file') ? 'block' : 'none';
+  }
+
+  async function useFileMode() {
+    showMode('file');
+    await ensureCtx();
+    // Disconnect mic if active
+    stopMic();
+
+    // Reconnect chain: file -> analyser -> destination
+    disconnectAll();
+    if (!elemSource && els.audio.src) {
+      elemSource = ctx.createMediaElementSource(els.audio);
+    }
+    if (elemSource) {
+      elemSource.connect(analyser);
+      analyser.connect(ctx.destination);
+    }
+    els.hud.textContent = 'File mode: load a file and press Play.';
+  }
+
+  async function useMicMode() {
+    showMode('mic');
+    await ensureCtx();
+
+    // Disconnect file path
+    disconnectAll();
+
+    els.hud.textContent = 'Microphone mode: click “Enable Mic”.';
+  }
+
+  function disconnectAll() {
+    try { analyser.disconnect(); } catch {}
+    if (elemSource) { try { elemSource.disconnect(); } catch {} }
+    if (micSource)  { try { micSource.disconnect(); }  catch {} }
+  }
+
+  // --- Mic control
+  async function startMic() {
+    await ensureCtx();
+
+    // Request stream (with sensible constraints)
+    micStream = await navigator.mediaDevices.getUserMedia({
+      audio: {
+        echoCancellation: true,
+        noiseSuppression: true,
+        autoGainControl: false,
+        channelCount: { ideal: 1 }
+      }, video: false
+    });
+
+    micSource = ctx.createMediaStreamSource(micStream);
+    connectMicGraph();
+    els.micBtn.textContent = 'Stop Mic';
+    els.hud.textContent = 'Mic enabled.';
+  }
+
+  function connectMicGraph() {
+    disconnectAll();
+    if (!micSource) return;
+    micSource.connect(analyser);
+    if (els.monitor.checked) {
+      analyser.connect(ctx.destination); // pass-through (analyser is transparent)
+    }
+  }
+
+  function stopMic() {
+    if (micStream) {
+      micStream.getTracks().forEach(t => t.stop());
+      micStream = null;
+    }
+    if (micSource) { try { micSource.disconnect(); } catch {} micSource = null; }
+    els.micBtn.textContent = 'Enable Mic';
+  }
+
+  // --- Rendering
+  function drawBackground() {
+    const { width:W, height:H } = els.canvas;
+    g.clearRect(0, 0, W, H);
+    g.save();
+    g.globalAlpha = 0.08;
+    g.fillStyle = '#0f1220';
+    g.fillRect(0, 0, W, H);
+    g.strokeStyle = '#1d2333'; g.lineWidth = 1;
+    const rows = 6, cols = 12;
+    for (let i = 1; i < rows; i++) { const y = (H / rows) * i; g.beginPath(); g.moveTo(0, y); g.lineTo(W, y); g.stroke(); }
+    for (let j = 1; j < cols; j++) { const x = (W / cols) * j; g.beginPath(); g.moveTo(x, 0); g.lineTo(x, H); g.stroke(); }
+    g.restore();
+    const grad = g.createLinearGradient(0, 0, 0, H);
+    grad.addColorStop(0, 'rgba(0,0,0,0)'); grad.addColorStop(1, 'rgba(0,0,0,0.25)');
+    g.fillStyle = grad; g.fillRect(0, 0, W, H);
+  }
+
+  function makeBandEdgesLinear(nBands, nBins) {
+    const edges = new Array(nBands + 1); let last = 0;
+    for (let i = 0; i < nBands; i++) {
+      const next = (i === nBands - 1) ? nBins : Math.round((i + 1) * nBins / nBands);
+      edges[i] = last; last = Math.max(last + 1, next);
+    }
+    edges[nBands] = nBins; return edges;
+  }
+  function makeBandEdgesLog(nBands, nBins, sampleRate, fMin = 20) {
+    const nyq = sampleRate / 2;
+    const edges = new Array(nBands + 1);
+    const fLo = Math.max(10, fMin); const fHi = nyq;
+    const r = Math.pow(fHi / fLo, 1 / nBands);
+    edges[0] = 0; let f = fLo;
+    for (let i = 1; i < nBands; i++) {
+      f *= r; const bin = Math.round((f / nyq) * nBins);
+      edges[i] = clamp(bin, edges[i - 1] + 1, nBins - (nBands - i));
+    }
+    edges[nBands] = nBins; return edges;
+  }
+
+  function render() {
+    rafId = requestAnimationFrame(render);
+    if (!analyser) return;
+
+    const nBins = analyser.frequencyBinCount;
+    if (!dataDB || dataDB.length !== nBins) dataDB = new Float32Array(nBins);
+    analyser.getFloatFrequencyData(dataDB);
+
+    const now = performance.now(); frameCounter++;
+    if (now - lastDraw >= 500) {
+      fpsAvg = (frameCounter * 1000) / (now - lastDraw);
+      frameCounter = 0; lastDraw = now;
+      els.fps.textContent = `${fpsAvg.toFixed(0)} fps`;
+    }
+
+    drawBackground();
+    const nBands = parseInt(els.bands.value, 10);
+    const sampleRate = ctx.sampleRate;
+    const edges = (els.scale.value === 'log')
+      ? makeBandEdgesLog(nBands, nBins, sampleRate)
+      : makeBandEdgesLinear(nBands, nBins);
+
+    const W = els.canvas.clientWidth, H = els.canvas.clientHeight;
+    const gap = Math.max(1, Math.floor(W / nBands * 0.1));
+    const barW = Math.max(2, Math.floor((W - gap * (nBands + 1)) / nBands));
+    const minDB = analyser.minDecibels, maxDB = analyser.maxDecibels, dbRange = maxDB - minDB;
+
+    for (let b = 0; b < nBands; b++) {
+      const i0 = edges[b], i1 = edges[b + 1];
+      const count = Math.max(1, i1 - i0);
+      let powSum = 0;
+      for (let i = i0; i < i1; i++) powSum += dbToLinPow(dataDB[i]);
+      const dbAvg = linPowToDb(powSum / count);
+      const norm = clamp((dbAvg - minDB) / dbRange, 0, 1);
+
+      const x = Math.floor(gap + b * (barW + gap));
+      const h = Math.max(1, Math.round(norm * H));
+      const y = H - h;
+
+      const hue = hueForBand(b, nBands), sat = 80;
+      const lightBase = 40 + 20 * norm;
+      const fill = `hsl(${hue} ${sat}% ${lightBase}%)`;
+      const fillTop = `hsl(${hue} ${sat}% ${Math.min(96, lightBase + 35)}%)`;
+      const grd = g.createLinearGradient(0, y, 0, y + h);
+      grd.addColorStop(0, fillTop); grd.addColorStop(1, fill);
+
+      g.fillStyle = grd;
+      const radius = Math.min(10, Math.floor(barW * 0.35));
+      roundRect(g, x, y, barW, h, radius); g.fill();
+
+      g.save();
+      g.globalCompositeOperation = 'lighter';
+      g.shadowBlur = 18 * (0.15 + 0.85 * norm);
+      g.shadowColor = `hsl(${hue} 90% 60% / 0.6)`;
+      g.fillStyle = `hsl(${hue} 90% 60% / ${0.25 + 0.4 * norm})`;
+      g.fillRect(x, y, barW, Math.max(2, Math.min(12, h * 0.3)));
+      g.restore();
+    }
+
+    els.hud.textContent =
+      `FFT: ${analyser.fftSize} | bins: ${nBins} | bands: ${nBands} | smoothing: ${analyser.smoothingTimeConstant.toFixed(2)}`;
+  }
+
+  // --- UI wiring
+  els.bands.addEventListener('input', () => els.bandsVal.textContent = els.bands.value);
+  els.smooth.addEventListener('input', () => {
+    els.smoothVal.textContent = parseFloat(els.smooth.value).toFixed(2);
+    if (analyser) analyser.smoothingTimeConstant = parseFloat(els.smooth.value);
+  });
+  els.fftSize.addEventListener('change', () => { if (analyser) { analyser.fftSize = parseInt(els.fftSize.value, 10); dataDB = null; } });
+  els.scale.addEventListener('change', () => { /* edges recomputed on next frame */ });
+
+  els.sourceSel.addEventListener('change', async () => {
+    const mode = els.sourceSel.value;
+    if (mode === 'file') await useFileMode(); else await useMicMode();
+  });
+
+  // File handling
+  els.file.addEventListener('change', () => {
+    const file = els.file.files?.[0];
+    if (!file) return;
+    if (objectURL) URL.revokeObjectURL(objectURL);
+    objectURL = URL.createObjectURL(file);
+    els.audio.src = objectURL;
+    els.audio.onloadedmetadata = async () => {
+      els.playBtn.disabled = false;
+      await useFileMode();
+      els.hud.textContent = `Loaded: ${file.name} (${(els.audio.duration || 0).toFixed(1)} s)`;
+    };
+  });
+
+  els.playBtn.addEventListener('click', async () => {
+    await ensureCtx();
+    if (els.audio.paused) {
+      await ctx.resume();
+      await els.audio.play();
+      els.playBtn.textContent = 'Pause';
+      // Ensure proper routing for file mode
+      if (!elemSource) elemSource = ctx.createMediaElementSource(els.audio);
+      elemSource.connect(analyser); analyser.connect(ctx.destination);
+    } else {
+      els.audio.pause();
+      els.playBtn.textContent = 'Play';
+    }
+  });
+  els.audio.addEventListener('play', () => els.playBtn.textContent = 'Pause');
+  els.audio.addEventListener('pause', () => els.playBtn.textContent = 'Play');
+
+  // Mic buttons
+  els.micBtn.addEventListener('click', async () => {
+    await ensureCtx();
+    if (!micStream) {
+      try { await startMic(); }
+      catch (e) { els.hud.textContent = 'Mic error: ' + (e?.message || e); }
+    } else {
+      stopMic(); disconnectAll(); els.hud.textContent = 'Mic stopped.';
+    }
+  });
+  els.monitor.addEventListener('change', () => { if (micStream) connectMicGraph(); });
+
+  // Page visibility (save battery)
+  document.addEventListener('visibilitychange', async () => {
+    if (!ctx) return;
+    if (document.hidden) await ctx.suspend();
+    else if (els.sourceSel.value === 'file' ? !els.audio.paused : !!micStream) await ctx.resume();
+  });
+
+  // Initial draw
+  resizeCanvas(); drawBackground(); useFileMode();
+})();
+</script>
+</body>
+</html>
+
