@@ -171,6 +171,7 @@ and let it run locally with:
 **python3 pyrecplayfastMDCT.py**
 
 
-Observe: In the animation, vertically is the time, horizontally is the frequency (left is 0, on the right end is the Nyquist frequency, here with 32 kHz sampling frequency 16 kHz, and the color indicated the signal power in that time/frequency location.
+Observe: In the animation, vertically is the time, horizontally is the frequency, left is 0, on the right end is the Nyquist frequency, here with 32 kHz sampling frequency 16 kHz, and the color indicated the signal power in that time/frequency location.
+
 
 
