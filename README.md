@@ -154,7 +154,7 @@ Please check the following files at the 'binder' folder:
  # Note
  Examples requiring a microphone will not work on remote environments such as Binder and Google Colab. 
 
- #Local Demos for filter banks and subband time/frequency decomposition:
+# Local Demos for filter banks and subband time/frequency decomposition:
 
 ### Browser app example:
 
@@ -172,4 +172,5 @@ and let it run locally with:
 
 
 Observe: In the animation, vertically is the time, horizontally is the frequency (left is 0, on the right end is the Nyquist frequency, here with 32 kHz sampling frequency 16 kHz, and the color indicated the signal power in that time/frequency location.
+
 
