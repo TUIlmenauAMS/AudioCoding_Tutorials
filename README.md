@@ -142,6 +142,9 @@
     - MPEG - Audio Decoder Process (1) Layer-3 Decoder flow chart
     - MPEG - Audio Decoder Process Layer-3 Decoder Diagramm
 - Annex: Abbreviations and Companies
+
+## Python Audio Coder
+- Our Python audio coder is here: [https://github.com/TUIlmenauAMS/Python-Audio-Coder](https://github.com/TUIlmenauAMS/Python-Audio-Coder)
     
  # YouTube Playlist
  [![Youtube](https://badgen.net/badge/Launch/on%20YouTube/red?icon=terminal)](https://www.youtube.com/playlist?list=PL6QnpHKwdPYjRWkWLswWmxFrDmj6leRwh)
@@ -172,6 +175,7 @@ and let it run locally with:
 
 
 Observe: In the animation, vertically is the time, horizontally is the frequency, left is 0, on the right end is the Nyquist frequency, here with 32 kHz sampling frequency 16 kHz, and the color indicated the signal power in that time/frequency location.
+
 
 
 
