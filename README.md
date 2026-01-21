@@ -145,6 +145,9 @@
 
 ## Python Audio Coder
 - Our Python audio coder is here: [https://github.com/TUIlmenauAMS/Python-Audio-Coder](https://github.com/TUIlmenauAMS/Python-Audio-Coder)
+- You can also use the Colab notebook:
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/TUIlmenauAMS/Python-Audio-Coder/blob/master/pythonAudioCoderExamples.ipynb)
+
 
 ## A Psychoacoustic Loss Function
 A recently added functionality is a loss function based on the psycho-acoustic model, for optimizing machine learning models. This functionality is in the module "psyacloss.py".
@@ -186,6 +189,7 @@ and let it run locally with:
 
 
 Observe: In the animation, vertically is the time, horizontally is the frequency, left is 0, on the right end is the Nyquist frequency, here with 32 kHz sampling frequency 16 kHz, and the color indicated the signal power in that time/frequency location.
+
 
 
 
