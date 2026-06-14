@@ -7,6 +7,8 @@
 [Applied Media Systems Group](https://www.tu-ilmenau.de/en/applied-media-systems-group/) <br>
 [Technische Universität Ilmenau](https://www.tu-ilmenau.de/)
 
+Our accompanying Chatbot: [Audio Coding Guide](https://chatgpt.com/g/g-Ag8Ila1M6-audio-coding-guide)
+
 # Content
 ## 01 Basics of Multirate Signal Processing:<br> [![NBViewer](https://badgen.net/badge/Launch/on%20NBViewer/blue?icon=terminal)](https://nbviewer.jupyter.org/github/GuitarsAI/AudioCodingTutorials/blob/master/AC_01_Basics_Multirate.ipynb)[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/GuitarsAI/AudioCodingTutorials/master?filepath=AC_01_Basics_Multirate.ipynb)[![Google Colab](https://badgen.net/badge/Launch/on%20Google%20Colab/black?icon=terminal)](https://colab.research.google.com/github/TUIlmenauAMS/AudioCoding_Tutorials/blob/master/AC_01_Basics_Multirate.ipynb)[![Youtube](https://badgen.net/badge/Launch/on%20YouTube/red?icon=terminal)](https://youtu.be/Tp96ICZ_pMg)
 
