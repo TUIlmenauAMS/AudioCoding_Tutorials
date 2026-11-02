@@ -10,20 +10,20 @@
 Our accompanying Chatbot: [Audio Coding Guide](https://chatgpt.com/g/g-Ag8Ila1M6-audio-coding-guide)
 
 # Content
-## 01 Basics of Multirate Signal Processing:<br> [![NBViewer](https://badgen.net/badge/Launch/on%20NBViewer/blue?icon=terminal)](https://nbviewer.jupyter.org/github/GuitarsAI/AudioCodingTutorials/blob/master/AC_01_Basics_Multirate.ipynb)[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/GuitarsAI/AudioCodingTutorials/master?filepath=AC_01_Basics_Multirate.ipynb)[![Google Colab](https://badgen.net/badge/Launch/on%20Google%20Colab/black?icon=terminal)](https://colab.research.google.com/github/TUIlmenauAMS/AudioCoding_Tutorials/blob/master/AC_01_Basics_Multirate.ipynb)[![Youtube](https://badgen.net/badge/Launch/on%20YouTube/red?icon=terminal)](https://youtu.be/Tp96ICZ_pMg)
+## 01 Basics of Multirate Signal Processing:<br> [![NBViewer](https://badgen.net/badge/Launch/on%20NBViewer/blue?icon=terminal)](https://nbviewer.org/github/TUIlmenauAMS/AudioCoding_Tutorials/blob/main/AC_01_Basics_Multirate.ipynb)[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/TUIlmenauAMS/AudioCoding_Tutorials/main?filepath=AC_01_Basics_Multirate.ipynb)[![Google Colab](https://badgen.net/badge/Launch/on%20Google%20Colab/black?icon=terminal)](https://colab.research.google.com/github/TUIlmenauAMS/AudioCoding_Tutorials/blob/main/AC_01_Basics_Multirate.ipynb)[![Youtube](https://badgen.net/badge/Launch/on%20YouTube/red?icon=terminal)](https://youtu.be/Tp96ICZ_pMg)
 
   - Sampling
     - Sampling a Discrete Time Signal
     - Downsampling
     - Upsampling
-    - Real-Time Python Example: Sampling
+    - Python Example: Sampling
   - Effects in the z-Domain
   - Modulation
-    - Real-Time Python Example: Modulating a Speech Signal
+    - Python Example: Modulating a Speech Signal
   - Mid-rise and Mid-tread quantization
-    - Real-Time Python Example: Quantization
+    - Python Example: Quantization
 
-## 02 Filter Banks I :<br> [![NBViewer](https://badgen.net/badge/Launch/on%20NBViewer/blue?icon=terminal)](https://nbviewer.jupyter.org/github/GuitarsAI/AudioCodingTutorials/blob/master/AC_02_FilterBanks1.ipynb)[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/GuitarsAI/AudioCodingTutorials/master?filepath=AC_02_FilterBanks1.ipynb)[![Google Colab](https://badgen.net/badge/Launch/on%20Google%20Colab/black?icon=terminal)](https://colab.research.google.com/github/TUIlmenauAMS/AudioCoding_Tutorials/blob/master/AC_02_FilterBanks1.ipynb)[![Youtube](https://badgen.net/badge/Launch/on%20YouTube/red?icon=terminal)](https://youtu.be/Zk8Oum6LtUc)
+## 02 Filter Banks I :<br> [![NBViewer](https://badgen.net/badge/Launch/on%20NBViewer/blue?icon=terminal)](https://nbviewer.org/github/TUIlmenauAMS/AudioCoding_Tutorials/blob/main/AC_02_FilterBanks1.ipynb)[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/TUIlmenauAMS/AudioCoding_Tutorials/main?filepath=AC_02_FilterBanks1.ipynb)[![Google Colab](https://badgen.net/badge/Launch/on%20Google%20Colab/black?icon=terminal)](https://colab.research.google.com/github/TUIlmenauAMS/AudioCoding_Tutorials/blob/main/AC_02_FilterBanks1.ipynb)[![Youtube](https://badgen.net/badge/Launch/on%20YouTube/red?icon=terminal)](https://youtu.be/Zk8Oum6LtUc)
 
   - Filter Banks
   - Downsampling
@@ -34,9 +34,9 @@ Our accompanying Chatbot: [Audio Coding Guide](https://chatgpt.com/g/g-Ag8Ila1M6
   - Synthesis Filter Bank
   - Polyphase
   - Transforms as Filter Banks
-  - Real-Time Python Examples
+  - Python Examples: FFT, Spectrogram, MDCT
 
-## 03 Filter Banks II :<br> [![NBViewer](https://badgen.net/badge/Launch/on%20NBViewer/blue?icon=terminal)](https://nbviewer.jupyter.org/github/GuitarsAI/AudioCodingTutorials/blob/master/AC_03_FilterBanks2.ipynb)[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/GuitarsAI/AudioCodingTutorials/master?filepath=AC_03_FilterBanks2.ipynb)[![Google Colab](https://badgen.net/badge/Launch/on%20Google%20Colab/black?icon=terminal)](https://colab.research.google.com/github/TUIlmenauAMS/AudioCoding_Tutorials/blob/master/AC_03_FilterBanks2.ipynb)[![Youtube](https://badgen.net/badge/Launch/on%20YouTube/red?icon=terminal)](https://youtu.be/f1ykTtvWkwM)
+## 03 Filter Banks II :<br> [![NBViewer](https://badgen.net/badge/Launch/on%20NBViewer/blue?icon=terminal)](https://nbviewer.org/github/TUIlmenauAMS/AudioCoding_Tutorials/blob/main/AC_03_FilterBanks2.ipynb)[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/TUIlmenauAMS/AudioCoding_Tutorials/main?filepath=AC_03_FilterBanks2.ipynb)[![Google Colab](https://badgen.net/badge/Launch/on%20Google%20Colab/black?icon=terminal)](https://colab.research.google.com/github/TUIlmenauAMS/AudioCoding_Tutorials/blob/main/AC_03_FilterBanks2.ipynb)[![Youtube](https://badgen.net/badge/Launch/on%20YouTube/red?icon=terminal)](https://youtu.be/f1ykTtvWkwM)
 
   - Modulated Filter Banks - Extending the DCT
   - Modulated Filter Banks
@@ -57,18 +57,18 @@ Our accompanying Chatbot: [Audio Coding Guide](https://chatgpt.com/g/g-Ag8Ila1M6
     - Zero-Delay Matrix
     - Maximum-Delay Matrix
     - Design Method
-    - Real-Time Example
+    - Python Example
     
-## 03b Filter Banks III :<br> [![NBViewer](https://badgen.net/badge/Launch/on%20NBViewer/blue?icon=terminal)](https://nbviewer.jupyter.org/github/GuitarsAI/AudioCodingTutorials/blob/master/AC_03b_FilterBanks3.ipynb)[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/GuitarsAI/AudioCodingTutorials/master?filepath=AC_03b_FilterBanks3.ipynb)[![Google Colab](https://badgen.net/badge/Launch/on%20Google%20Colab/black?icon=terminal)](https://colab.research.google.com/github/TUIlmenauAMS/AudioCoding_Tutorials/blob/master/AC_03b_FilterBanks3.ipynb)[![Youtube](https://badgen.net/badge/Launch/on%20YouTube/red?icon=terminal)](https://youtu.be/eLHqX6qZcX4)
+## 03b Filter Banks III :<br> [![NBViewer](https://badgen.net/badge/Launch/on%20NBViewer/blue?icon=terminal)](https://nbviewer.org/github/TUIlmenauAMS/AudioCoding_Tutorials/blob/main/AC_03b_FilterBanks3.ipynb)[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/TUIlmenauAMS/AudioCoding_Tutorials/main?filepath=AC_03b_FilterBanks3.ipynb)[![Google Colab](https://badgen.net/badge/Launch/on%20Google%20Colab/black?icon=terminal)](https://colab.research.google.com/github/TUIlmenauAMS/AudioCoding_Tutorials/blob/main/AC_03b_FilterBanks3.ipynb)[![Youtube](https://badgen.net/badge/Launch/on%20YouTube/red?icon=terminal)](https://youtu.be/eLHqX6qZcX4)
 
   - Block Switching
-  - Wavelets, QMF (Quadradutre Mirror Filter) Filter Banks
+  - Wavelets, QMF (Quadrature Mirror Filter) Filter Banks
     - QMF (Quadrature Mirror Filter)
   - CQMF: Conjugate QMF
   - Pseudo-QMF (PQMF)
     - PQMF used in MPEG4
     
-## 04 Psychoacoustics :<br> [![NBViewer](https://badgen.net/badge/Launch/on%20NBViewer/blue?icon=terminal)](https://nbviewer.jupyter.org/github/GuitarsAI/AudioCodingTutorials/blob/master/AC_04_psychoAcoustics.ipynb)[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/GuitarsAI/AudioCodingTutorials/master?filepath=AC_04_psychoAcoustics.ipynb)[![Google Colab](https://badgen.net/badge/Launch/on%20Google%20Colab/black?icon=terminal)](https://colab.research.google.com/github/TUIlmenauAMS/AudioCoding_Tutorials/blob/master/AC_04_psychoAcoustics.ipynb)[![Youtube](https://badgen.net/badge/Launch/on%20YouTube/red?icon=terminal)](https://youtu.be/Dp9NhFShaPM)
+## 04 Psychoacoustics :<br> [![NBViewer](https://badgen.net/badge/Launch/on%20NBViewer/blue?icon=terminal)](https://nbviewer.org/github/TUIlmenauAMS/AudioCoding_Tutorials/blob/main/AC_04_psychoAcoustics.ipynb)[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/TUIlmenauAMS/AudioCoding_Tutorials/main?filepath=AC_04_psychoAcoustics.ipynb)[![Google Colab](https://badgen.net/badge/Launch/on%20Google%20Colab/black?icon=terminal)](https://colab.research.google.com/github/TUIlmenauAMS/AudioCoding_Tutorials/blob/main/AC_04_psychoAcoustics.ipynb)[![Youtube](https://badgen.net/badge/Launch/on%20YouTube/red?icon=terminal)](https://youtu.be/Dp9NhFShaPM)
 
   - Block Diagram of a Perceptual Audio Encoder
   - Structure of the Human Ear
@@ -94,16 +94,16 @@ Our accompanying Chatbot: [Audio Coding Guide](https://chatgpt.com/g/g-Ag8Ila1M6
         - Tonality
         - Masking - Spreading Function
         - Calculating the Masking Threshold
-        - In-Band Making
+        - In-Band Masking
         - Masking Neighboring Bands
         - Temporal Masking Effects
         
-## 05 Psychoacoustics Models :<br> [![NBViewer](https://badgen.net/badge/Launch/on%20NBViewer/blue?icon=terminal)](https://nbviewer.jupyter.org/github/GuitarsAI/AudioCodingTutorials/blob/master/AC_05_psychoAcousticsModels.ipynb)[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/GuitarsAI/AudioCodingTutorials/master?filepath=AC_05_psychoAcousticsModels.ipynb)[![Google Colab](https://badgen.net/badge/Launch/on%20Google%20Colab/black?icon=terminal)](https://colab.research.google.com/github/TUIlmenauAMS/AudioCoding_Tutorials/blob/master/AC_05_psychoAcousticsModels.ipynb)[![Youtube](https://badgen.net/badge/Launch/on%20YouTube/red?icon=terminal)](https://youtu.be/CulE7VNtf5Q)
+## 05 Psychoacoustics Models :<br> [![NBViewer](https://badgen.net/badge/Launch/on%20NBViewer/blue?icon=terminal)](https://nbviewer.org/github/TUIlmenauAMS/AudioCoding_Tutorials/blob/main/AC_05_psychoAcousticsModels.ipynb)[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/TUIlmenauAMS/AudioCoding_Tutorials/main?filepath=AC_05_psychoAcousticsModels.ipynb)[![Google Colab](https://badgen.net/badge/Launch/on%20Google%20Colab/black?icon=terminal)](https://colab.research.google.com/github/TUIlmenauAMS/AudioCoding_Tutorials/blob/main/AC_05_psychoAcousticsModels.ipynb)[![Youtube](https://badgen.net/badge/Launch/on%20YouTube/red?icon=terminal)](https://youtu.be/CulE7VNtf5Q)
 
 - Spreading Function: Python Example
 - Masking Neighboring Bands Non-Linear Superposition
 - Bark Scale Approximations:
-    - Zwicker&Terhard
+    - Zwicker&Terhardt
      - Traunmueller
      - Schröder
 - Bark Scale Approximations: Comparisons
@@ -113,7 +113,7 @@ Our accompanying Chatbot: [Audio Coding Guide](https://chatgpt.com/g/g-Ag8Ila1M6
 - The Complete Psycho-Acoustic Model
 - Physical Models of Hearing
     
-## 06 PQMF Filter Bank, MPEG-1 / MPEG-2 BC Audio :<br> [![NBViewer](https://badgen.net/badge/Launch/on%20NBViewer/blue?icon=terminal)](https://nbviewer.jupyter.org/github/GuitarsAI/AudioCodingTutorials/blob/master/AC_06_PQMF_FilterBank.ipynb)[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/GuitarsAI/AudioCodingTutorials/master?filepath=AC_06_PQMF_FilterBank.ipynb)[![Google Colab](https://badgen.net/badge/Launch/on%20Google%20Colab/black?icon=terminal)](https://colab.research.google.com/github/TUIlmenauAMS/AudioCoding_Tutorials/blob/master/AC_06_PQMF_FilterBank.ipynb)[![Youtube](https://badgen.net/badge/Launch/on%20YouTube/red?icon=terminal)](https://youtu.be/yiPMDqBT7qk)
+## 06 PQMF Filter Bank, MPEG-1 / MPEG-2 BC Audio :<br> [![NBViewer](https://badgen.net/badge/Launch/on%20NBViewer/blue?icon=terminal)](https://nbviewer.org/github/TUIlmenauAMS/AudioCoding_Tutorials/blob/main/AC_06_PQMF_FilterBank.ipynb)[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/TUIlmenauAMS/AudioCoding_Tutorials/main?filepath=AC_06_PQMF_FilterBank.ipynb)[![Google Colab](https://badgen.net/badge/Launch/on%20Google%20Colab/black?icon=terminal)](https://colab.research.google.com/github/TUIlmenauAMS/AudioCoding_Tutorials/blob/main/AC_06_PQMF_FilterBank.ipynb)[![Youtube](https://badgen.net/badge/Launch/on%20YouTube/red?icon=terminal)](https://youtu.be/yiPMDqBT7qk)
 
 - The Basic Paradigm of T/F Domain Audio Coding
 - MPEG Audio Standardization Philosophy
@@ -142,7 +142,7 @@ Our accompanying Chatbot: [Audio Coding Guide](https://chatgpt.com/g/g-Ag8Ila1M6
 - MPEG-1 Audio Decoder
     - MPEG Audio – General Decoder Structure
     - MPEG - Audio Decoder Process (1) Layer-3 Decoder flow chart
-    - MPEG - Audio Decoder Process Layer-3 Decoder Diagramm
+    - MPEG - Audio Decoder Process Layer-3 Decoder Diagram
 - Annex: Abbreviations and Companies
 
 ## Python Audio Coder
@@ -160,7 +160,7 @@ Its use and function is illustrated in the following Colab notebook:
 ### The Colab Jupyter notebook for the perceptual loss function, using the psycho-acoustic model, with explanations:
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/TUIlmenauAMS/PsychoacousticLoss/blob/main/psyacLoss.ipynb)
 
-### The pscho-acoustic loss function only:
+### The psycho-acoustic loss function only:
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/TUIlmenauAMS/PsychoacousticLoss/blob/main/onlyPsyacLoss.ipynb)
 
     
@@ -173,7 +173,7 @@ Please check the following files at the 'binder' folder:
   - postBuild
   
  # Note
- Examples requiring a microphone will not work on remote environments such as Binder and Google Colab. 
+ In tutorials 01 to 03, the audio examples record from your microphone in the browser when running in Google Colab, and use a sound file from the `audio` folder otherwise. The real-time examples in the later tutorials need a local microphone and speakers (PyAudio) and will not work on remote environments such as Binder and Google Colab.
 
 # Local Demos for filter banks and subband time/frequency decomposition:
 
