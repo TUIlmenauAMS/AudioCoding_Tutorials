@@ -35,7 +35,7 @@ Our accompanying Chatbot: [Audio Coding Guide](https://chatgpt.com/g/g-Ag8Ila1M6
   - Polyphase
   - Transforms as Filter Banks
   - Python Examples: FFT, Spectrogram, MDCT
-  - [Browser app example](https://htmlpreview.github.io/?https://github.com/TUIlmenauAMS/AudioCoding_Tutorials//blob/master/spectrumdisplaywmic.html)
+  - [Browser app example](https://htmlpreview.github.io/?https://github.com/TUIlmenauAMS/AudioCoding_Tutorials//blob/master/spectrumdisplaywmic.html) (reload after activating mic might be needed)
 
 ## 03 Filter Banks II :<br> [![NBViewer](https://badgen.net/badge/Launch/on%20NBViewer/blue?icon=terminal)](https://nbviewer.org/github/TUIlmenauAMS/AudioCoding_Tutorials/blob/main/AC_03_FilterBanks2.ipynb)[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/TUIlmenauAMS/AudioCoding_Tutorials/main?filepath=AC_03_FilterBanks2.ipynb)[![Google Colab](https://badgen.net/badge/Launch/on%20Google%20Colab/black?icon=terminal)](https://colab.research.google.com/github/TUIlmenauAMS/AudioCoding_Tutorials/blob/main/AC_03_FilterBanks2.ipynb)[![Youtube](https://badgen.net/badge/Launch/on%20YouTube/red?icon=terminal)](https://youtu.be/f1ykTtvWkwM)
 
